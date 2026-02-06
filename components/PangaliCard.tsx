@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { Pangali } from '@/lib/loadPangaliData';
+import { formatINR } from '@/lib/formatINR';
 
 export default function PangaliCard({ data }: { data: Pangali }) {
   const [open, setOpen] = useState(false);
@@ -9,10 +10,7 @@ export default function PangaliCard({ data }: { data: Pangali }) {
   // ✅ Correct business logic
   let status: 'Completed' | 'Partial' | 'Yet to Give';
 
-  // If both committed and paid are 0, show "Yet to Give"
-  if (data.committed === 0 && data.paid === 0) {
-    status = 'Yet to Give';
-  } else if (data.balance === 0) {
+  if (data.balance === 0) {
     status = 'Completed';
   } else if (data.paid === 0) {
     status = 'Yet to Give';
@@ -20,38 +18,58 @@ export default function PangaliCard({ data }: { data: Pangali }) {
     status = 'Partial';
   }
 
-  // ✅ Professional, subtle colors
+  // ✅ Professional, subtle colors for badge
   const statusColor =
     status === 'Completed'
-      ? 'bg-green-50 text-green-700 border-green-200'
+      ? 'bg-green-100 text-green-800 border-green-300'
       : status === 'Yet to Give'
-      ? 'bg-red-50 text-red-700 border-red-200'
-      : 'bg-yellow-50 text-yellow-700 border-yellow-200';
+      ? 'bg-red-100 text-red-800 border-red-300'
+      : 'bg-yellow-100 text-yellow-800 border-yellow-300';
+
+  // ✅ Colorful card backgrounds based on status
+  const cardBg =
+    status === 'Completed'
+      ? 'bg-green-50 border-green-200 hover:bg-green-100'
+      : status === 'Yet to Give'
+      ? 'bg-red-50 border-red-200 hover:bg-red-100'
+      : 'bg-amber-50 border-amber-200 hover:bg-amber-100';
 
   return (
     <div
       onClick={() => setOpen(!open)}
-      className="
+      className={`
         rounded-xl
-        border border-slate-200
-        bg-white
+        border-2
+        ${cardBg}
         p-4
         shadow-sm
         hover:shadow-md
-        transition
+        transition-all
         cursor-pointer
-      "
+      `}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-slate-800 truncate">
-          {data.name}
-        </h3>
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          {/* Status indicator dot */}
+          <div
+            className={`h-2 w-2 rounded-full flex-shrink-0 ${
+              status === 'Completed'
+                ? 'bg-green-500'
+                : status === 'Yet to Give'
+                ? 'bg-red-500'
+                : 'bg-yellow-500'
+            }`}
+          />
+          <h3 className="text-sm font-semibold text-slate-800 truncate">
+            {data.name}
+          </h3>
+        </div>
 
         <span
           className={`
             text-xs px-2.5 py-0.5 rounded-full border
-            whitespace-nowrap ${statusColor}
+            whitespace-nowrap flex-shrink-0 ${statusColor}
           `}
         >
           {status}
@@ -66,14 +84,14 @@ export default function PangaliCard({ data }: { data: Pangali }) {
           </p>
           <p>
             <span className="font-medium">உறுதி:</span>{' '}
-            ₹{data.committed.toLocaleString()}
+            ₹{formatINR(data.committed)}
           </p>
           <p>
             <span className="font-medium">கொடுத்தது:</span>{' '}
-            ₹{data.paid.toLocaleString()}
+            ₹{formatINR(data.paid)}
           </p>
           <p className="font-semibold text-red-700">
-            மீதம்: ₹{data.balance.toLocaleString()}
+            மீதம்: ₹{formatINR(data.balance)}
           </p>
         </div>
       )}

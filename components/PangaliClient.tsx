@@ -13,27 +13,36 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
   const [filter, setFilter] = useState<StatusFilter>('ALL');
 
   const filteredData = useMemo(() => {
-    return data.filter(p => {
-      const matchesSearch = p.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+    return data
+      .filter(p => {
+        const matchesSearch = p.name
+          .toLowerCase()
+          .includes(search.toLowerCase());
 
-      let status: StatusFilter;
-      if (p.balance === 0) status = 'COMPLETED';
-      else if (p.paid === 0) status = 'YET_TO_GIVE';
-      else status = 'PARTIAL';
+        let status: StatusFilter;
+        if (p.balance === 0) status = 'COMPLETED';
+        else if (p.paid === 0) status = 'YET_TO_GIVE';
+        else status = 'PARTIAL';
 
-      const matchesFilter =
-        filter === 'ALL' || filter === status;
+        const matchesFilter =
+          filter === 'ALL' || filter === status;
 
-      return matchesSearch && matchesFilter;
-    });
+        return matchesSearch && matchesFilter;
+      })
+      .sort((a, b) => {
+        // Sort by highest pending balance first (most urgent)
+        if (b.balance !== a.balance) {
+          return b.balance - a.balance;
+        }
+        // Then by name for consistency
+        return a.name.localeCompare(b.name);
+      });
   }, [data, search, filter]);
 
   return (
     <BackgroundWrapper images={['/assets/murugan.jpg']}>
-      <div className="min-h-screen p-5">
-        <h1 className="text-3xl font-serif mb-4">
+      <div className="min-h-screen p-3 sm:p-5">
+        <h1 className="text-2xl sm:text-3xl font-serif mb-3 sm:mb-4">
           👥 பங்காளிகள் – திருக்கொடை நிலை
         </h1>
 

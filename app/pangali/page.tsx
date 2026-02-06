@@ -1,7 +1,7 @@
 import { loadPangaliData } from '@/lib/loadPangaliData';
 import PangaliClient from '@/components/PangaliClient';
 
-export default function PangaliPage() {
-  const data = loadPangaliData();
+export default async function PangaliPage() {
+  const data = await loadPangaliData();
   return <PangaliClient data={data} />;
 }

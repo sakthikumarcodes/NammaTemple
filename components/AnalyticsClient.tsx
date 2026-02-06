@@ -90,21 +90,21 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
   ];
 
   return (
-    <BackgroundWrapper images={['/assets/temple.jpeg']}>
-      <div className="p-5">
-        <h1 className="text-3xl font-serif mb-6">
+    <BackgroundWrapper images={['/assets/temple.jpg']}>
+      <div className="p-3 sm:p-5">
+        <h1 className="text-2xl sm:text-3xl font-serif mb-4 sm:mb-6">
           📊 நிதி பகுப்பாய்வு
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
 
           {/* ================= BAR CHART ================= */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <h2 className="text-lg font-semibold mb-4">
+          <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+            <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
               உறுதி vs பெறப்பட்டது
             </h2>
 
-            <div className="h-64">
+            <div className="h-56 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barData}>
                   <XAxis dataKey="name" />
@@ -117,19 +117,19 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
           </div>
 
           {/* ================= STATUS PIE ================= */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <h2 className="text-lg font-semibold mb-4">
+          <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+            <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
               பங்காளிகள் நிலை
             </h2>
 
-            <div className="h-64">
+            <div className="h-56 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={statusPieData}
                     dataKey="value"
-                    innerRadius={55}
-                    outerRadius={90}
+                    innerRadius={45}
+                    outerRadius={75}
                     paddingAngle={4}
                   >
                     {statusPieData.map((_, i) => (
@@ -144,19 +144,19 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
           </div>
 
           {/* ================= PERSON-WISE PENDING ================= */}
-          <div className="bg-white rounded-xl shadow-sm p-5 lg:col-span-2">
-            <h2 className="text-lg font-semibold mb-4">
+          <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5 lg:col-span-2">
+            <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
               பங்காளி வாரியான நிலுவை தொகை (Pending)
             </h2>
 
-            <div className="h-72">
+            <div className="h-64 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={pendingPieData}
                     dataKey="value"
-                    innerRadius={60}
-                    outerRadius={120}
+                    innerRadius={50}
+                    outerRadius={100}
                     paddingAngle={2}
                   >
                     {pendingPieData.map((_, i) => (
