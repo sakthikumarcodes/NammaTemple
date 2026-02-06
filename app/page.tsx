@@ -9,9 +9,10 @@ export default async function HomePage() {
 
   const totalCommitted = data.reduce((s, d) => s + d.committed, 0);
   const totalPaid = data.reduce((s, d) => s + d.paid, 0);
-  const totalBalance = totalCommitted - totalPaid;
+  const totalBalance = totalCommitted - totalPaid; // Pending from committed
   const totalForecastExpenses = expenses.reduce((s, e) => s + e.amount, 0);
-  const overallProgress = totalCommitted ? Math.min(1, totalPaid / totalCommitted) : 0;
+  const overallPending = totalForecastExpenses - totalPaid; // Overall pending: Forecast - Paid
+  const overallProgress = totalForecastExpenses ? Math.min(1, totalPaid / totalForecastExpenses) : 0;
 
   return (
     <BackgroundWrapper images={["/assets/temple.jpg"]}>
@@ -35,7 +36,7 @@ export default async function HomePage() {
           திருப்பணிகள் – நிதி நிலவரம்
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl mx-auto mb-8 sm:mb-12">
           {/* Forecast tile (clickable) */}
           <Link
             href="/expenses"
@@ -78,16 +79,29 @@ export default async function HomePage() {
             </p>
           </div>
 
-          {/* Balance + progress */}
+          {/* Balance (from committed) */}
           <div className="bg-white rounded-xl shadow-sm p-5 text-left">
             <p className="text-xs font-semibold uppercase tracking-wide text-red-600 flex items-center gap-2">
               <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-50 text-red-700 text-xs">
                 ⏳
               </span>
-              மீதம்
+              மீதம் (உறுதி)
             </p>
             <p className="mt-2 text-xl sm:text-2xl font-semibold text-red-700">
               ₹{formatINR(totalBalance)}
+            </p>
+          </div>
+
+          {/* Overall Pending (from forecast) */}
+          <div className="bg-white rounded-xl shadow-sm p-5 text-left border border-orange-200">
+            <p className="text-xs font-semibold uppercase tracking-wide text-orange-600 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-orange-50 text-orange-700 text-xs">
+                📊
+              </span>
+              மொத்த மீதம்
+            </p>
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-orange-700">
+              ₹{formatINR(overallPending)}
             </p>
             <div className="mt-3">
               <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
