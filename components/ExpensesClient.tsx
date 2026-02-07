@@ -2,14 +2,17 @@
 
 import { useState, useMemo } from 'react';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
+import PrintButton from '@/components/PrintButton';
 import type { Expense } from '@/lib/loadPangaliData';
 import { formatINR } from '@/lib/formatINR';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type SortOption = 'name' | 'amount' | 'spent' | 'remaining';
 
 export default function ExpensesClient({ data }: { data: Expense[] }) {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('remaining');
+  const { t } = useTranslation();
 
   const totalForecast = data.reduce((s, e) => s + e.amount, 0);
   const totalSpent = data.reduce((s, e) => s + e.spent, 0);
@@ -41,16 +44,23 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
   return (
     <BackgroundWrapper images={['/assets/temple.jpg']}>
       <div className="min-h-screen p-3 sm:p-5">
-        <h1 className="text-2xl sm:text-3xl font-serif mb-2">🧾 எதிர்பார்க்கப்படும் செலவுகள்</h1>
-        <p className="text-xs sm:text-sm text-slate-600 mb-4 sm:mb-6">
-          Forecast / Expected expenses (Excel sheet)
-        </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-2">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-serif mb-2">🧾 {t('expensesTitle')}</h1>
+            <p className="text-xs sm:text-sm text-slate-600">
+              {t('expensesSubtitle')}
+            </p>
+          </div>
+          <div className="no-print">
+            <PrintButton />
+          </div>
+        </div>
 
         {/* Search and Sort Controls */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5 no-print">
           <input
             type="text"
-            placeholder="செலவு வகையை தேடவும்…"
+            placeholder={t('searchExpenses')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="flex-1 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
@@ -60,33 +70,33 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
             onChange={e => setSortBy(e.target.value as SortOption)}
             className="w-full sm:w-48 px-4 py-2 rounded-lg border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
           >
-            <option value="remaining">மீதம் (அதிகம்)</option>
-            <option value="amount">தொகை (அதிகம்)</option>
-            <option value="spent">செலவு (அதிகம்)</option>
-            <option value="name">பெயர் (A-Z)</option>
+            <option value="remaining">{t('remainingExpense')} ({t('sortHighest')})</option>
+            <option value="amount">{t('amount')} ({t('sortHighest')})</option>
+            <option value="spent">{t('spent')} ({t('sortHighest')})</option>
+            <option value="name">{t('name')} (A-Z)</option>
           </select>
         </div>
 
         <div className="bg-white/90 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="p-4 grid grid-cols-2 sm:grid-cols-4 gap-4 border-b border-slate-200">
             <div className="text-sm">
-              <div className="text-slate-500 mb-1">Items</div>
+              <div className="text-slate-500 mb-1">{t('items')}</div>
               <div className="font-semibold text-slate-900 text-lg">{data.length}</div>
             </div>
             <div className="text-sm">
-              <div className="text-slate-500 mb-1">மொத்த கணிப்பு</div>
+              <div className="text-slate-500 mb-1">{t('totalForecastExpenses')}</div>
               <div className="font-semibold text-indigo-700 text-lg">
                 ₹{formatINR(totalForecast)}
               </div>
             </div>
             <div className="text-sm">
-              <div className="text-slate-500 mb-1">இதுவரை செலவு</div>
+              <div className="text-slate-500 mb-1">{t('totalSpent')}</div>
               <div className="font-semibold text-green-700 text-lg">
                 ₹{formatINR(totalSpent)}
               </div>
             </div>
             <div className="text-sm">
-              <div className="text-slate-500 mb-1">மீதம்</div>
+              <div className="text-slate-500 mb-1">{t('totalRemainingExpenses')}</div>
               <div className="font-semibold text-red-700 text-lg">
                 ₹{formatINR(totalRemaining)}
               </div>
@@ -97,10 +107,10 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
             <table className="min-w-[600px] sm:min-w-[680px] w-full text-xs sm:text-sm">
               <thead className="bg-slate-50 text-slate-700">
                 <tr className="border-t border-slate-200">
-                  <th className="p-2 sm:p-3 text-left">செலவு வகை</th>
-                  <th className="p-2 sm:p-3 text-right">தொகை (₹)</th>
-                  <th className="p-2 sm:p-3 text-right hidden sm:table-cell">இதுவரை செலவு</th>
-                  <th className="p-2 sm:p-3 text-right">மீதம்</th>
+                  <th className="p-2 sm:p-3 text-left">{t('expenseType')}</th>
+                  <th className="p-2 sm:p-3 text-right">{t('amount')}</th>
+                  <th className="p-2 sm:p-3 text-right hidden sm:table-cell">{t('spent')}</th>
+                  <th className="p-2 sm:p-3 text-right">{t('remainingExpense')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,7 +123,7 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
                         {e.amount > 0 && (
                           <div className="mt-1 sm:mt-2">
                             <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-500 mb-1">
-                              <span>முன்னேற்றம்</span>
+                              <span>{t('progress')}</span>
                               <span>{Math.round(progress)}%</span>
                             </div>
                             <div className="h-1 sm:h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
@@ -132,7 +142,7 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
                         )}
                         {/* Mobile: Show spent inline */}
                         <div className="sm:hidden mt-1 text-xs text-green-700">
-                          செலவு: ₹{formatINR(e.spent)}
+                          {t('spent')}: ₹{formatINR(e.spent)}
                         </div>
                       </td>
                       <td className="p-2 sm:p-3 text-right font-semibold">
@@ -155,9 +165,7 @@ export default function ExpensesClient({ data }: { data: Expense[] }) {
         {filteredAndSorted.length === 0 && (
           <div className="mt-10 text-center">
             <p className="text-slate-500 text-sm">
-              {search
-                ? 'பொருந்தும் செலவு விவரங்கள் இல்லை'
-                : 'செலவு விவரங்கள் இல்லை (Forecast sheet tab / gid சரிபார்க்கவும்)'}
+              {search ? t('noMatches') : t('noData')}
             </p>
           </div>
         )}

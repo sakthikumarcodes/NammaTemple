@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import DonateModal from './DonateModal';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function Navbar() {
                   ஸ்ரீ அன்னலூஞ்சல் பாப்பாத்தி அம்மன் கோயில்
                 </span>
                 <span className="text-[9px] sm:text-[11px] uppercase tracking-wide text-amber-100/80 hidden sm:block">
-                  Donation transparency dashboard
+                  கலந்துடை மகரிஷி கோத்திர மக்கள் குலதெய்வம்
                 </span>
               </div>
             </Link>
@@ -74,6 +75,15 @@ export default function Navbar() {
               >
                 Expenses
               </Link>
+              <Link
+                href="/family"
+                className="text-white hover:text-amber-100 transition-colors border-b-2 border-transparent hover:border-amber-200 pb-1"
+              >
+                Family
+              </Link>
+              
+              {/* Language Switcher */}
+              <LanguageSwitcher />
               
               {/* Donate Button */}
               <button
@@ -153,6 +163,16 @@ export default function Navbar() {
               >
                 Expenses
               </Link>
+              <Link
+                href="/family"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-3 py-2 text-white hover:bg-amber-700/50 rounded-lg transition-colors text-sm font-medium"
+              >
+                Family
+              </Link>
+              <div className="px-3 py-2">
+                <LanguageSwitcher />
+              </div>
               <button
                 onClick={() => {
                   setIsDonateModalOpen(true);

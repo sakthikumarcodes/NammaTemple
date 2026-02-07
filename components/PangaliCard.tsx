@@ -51,29 +51,32 @@ export default function PangaliCard({ data }: { data: Pangali }) {
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          {/* Status indicator dot */}
-          <div
-            className={`h-2 w-2 rounded-full flex-shrink-0 ${
-              status === 'Completed'
-                ? 'bg-green-500'
-                : status === 'Yet to Give'
-                ? 'bg-red-500'
-                : 'bg-yellow-500'
-            }`}
-          />
+          {/* Status indicator dot - only show if not completed */}
+          {status !== 'Completed' && (
+            <div
+              className={`h-2 w-2 rounded-full flex-shrink-0 ${
+                status === 'Yet to Give'
+                  ? 'bg-red-500'
+                  : 'bg-yellow-500'
+              }`}
+            />
+          )}
           <h3 className="text-sm font-semibold text-slate-800 truncate">
             {data.name}
           </h3>
         </div>
 
-        <span
-          className={`
-            text-xs px-2.5 py-0.5 rounded-full border
-            whitespace-nowrap flex-shrink-0 ${statusColor}
-          `}
-        >
-          {status}
-        </span>
+        {/* Status badge - only show if not completed */}
+        {status !== 'Completed' && (
+          <span
+            className={`
+              text-xs px-2.5 py-0.5 rounded-full border
+              whitespace-nowrap flex-shrink-0 ${statusColor}
+            `}
+          >
+            {status}
+          </span>
+        )}
       </div>
 
       {/* Expanded details */}

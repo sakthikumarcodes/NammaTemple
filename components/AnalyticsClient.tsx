@@ -14,8 +14,10 @@ import {
 } from 'recharts';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
 import type { Pangali } from '@/lib/loadPangaliData';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function AnalyticsClient({ data }: { data: Pangali[] }) {
+  const { t } = useTranslation();
   /* ======================
      AGGREGATIONS
   ====================== */
@@ -38,15 +40,15 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
 
   // Overall bar
   const barData = [
-    { name: 'உறுதி', value: totalCommitted },
-    { name: 'பெறப்பட்டது', value: totalPaid },
+    { name: t('committed'), value: totalCommitted },
+    { name: t('paid'), value: totalPaid },
   ];
 
   // Status pie
   const statusPieData = [
-    { name: 'முடிந்தது', value: completed.length },
-    { name: 'பகுதி', value: partial.length },
-    { name: 'இன்னும் வழங்கவில்லை', value: yetToGive.length },
+    { name: t('completed'), value: completed.length },
+    { name: t('partial'), value: partial.length },
+    { name: t('yetToGive'), value: yetToGive.length },
   ];
 
   // Person-wise pending pie (TOP 8 + Others)
@@ -65,7 +67,7 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
     ...(othersPending.length > 0
       ? [
           {
-            name: 'மற்றவர்கள்',
+            name: t('others'),
             value: othersPending.reduce((s, p) => s + p.balance, 0),
           },
         ]
@@ -93,15 +95,18 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
     <BackgroundWrapper images={['/assets/temple.jpg']}>
       <div className="p-3 sm:p-5">
         <h1 className="text-2xl sm:text-3xl font-serif mb-4 sm:mb-6">
-          📊 நிதி பகுப்பாய்வு
+          📊 {t('analyticsTitle')}
         </h1>
+        <p className="text-xs sm:text-sm text-slate-600 mb-4 sm:mb-6">
+          {t('analyticsSubtitle')}
+        </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
 
           {/* ================= BAR CHART ================= */}
           <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
             <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              உறுதி vs பெறப்பட்டது
+              {t('committedVsReceived')}
             </h2>
 
             <div className="h-56 sm:h-64">
@@ -119,7 +124,7 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
           {/* ================= STATUS PIE ================= */}
           <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
             <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              பங்காளிகள் நிலை
+              {t('pangaliStatus')}
             </h2>
 
             <div className="h-56 sm:h-64">
@@ -146,7 +151,7 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
           {/* ================= PERSON-WISE PENDING ================= */}
           <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5 lg:col-span-2">
             <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              பங்காளி வாரியான நிலுவை தொகை (Pending)
+              {t('pendingByPerson')}
             </h2>
 
             <div className="h-64 sm:h-72">
@@ -173,7 +178,7 @@ export default function AnalyticsClient({ data }: { data: Pangali[] }) {
             </div>
 
             <p className="mt-3 text-xs text-slate-500">
-              * Top 8 நிலுவை தொகை கொண்டவர்கள் தனியாக காட்டப்படுகின்றனர்
+              {t('topPendingNote')}
             </p>
           </div>
 

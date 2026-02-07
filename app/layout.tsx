@@ -22,6 +22,8 @@ export default function RootLayout({
 import './globals.css';
 import Navbar from '@/components/NavBar';
 import Footer from '@/components/Footer';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function RootLayout({
   children,
@@ -31,13 +33,17 @@ export default function RootLayout({
   return (
     <html lang="ta">
       <body className="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
-        <Navbar />
+        <LanguageProvider>
+          <ErrorBoundary>
+            <Navbar />
 
-        <main className="flex-1 max-w-7xl mx-auto w-full">
-          {children}
-        </main>
+            <main className="flex-1 max-w-7xl mx-auto w-full">
+              {children}
+            </main>
 
-        <Footer />
+            <Footer />
+          </ErrorBoundary>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -4,13 +4,16 @@ import { useMemo, useState } from 'react';
 import PangaliCard from '@/components/PangaliCard';
 import PangaliTable from '@/components/PangaliTable';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
+import PrintButton from '@/components/PrintButton';
 import type { Pangali } from '@/lib/loadPangaliData';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type StatusFilter = 'ALL' | 'COMPLETED' | 'PARTIAL' | 'YET_TO_GIVE';
 
 export default function PangaliClient({ data }: { data: Pangali[] }) {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<StatusFilter>('ALL');
+  const { t } = useTranslation();
 
   const filteredData = useMemo(() => {
     return data
@@ -42,15 +45,20 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
   return (
     <BackgroundWrapper images={['/assets/murugan.jpg']}>
       <div className="min-h-screen p-3 sm:p-5">
-        <h1 className="text-2xl sm:text-3xl font-serif mb-3 sm:mb-4">
-          👥 பங்காளிகள் – திருக்கொடை நிலை
-        </h1>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
+          <h1 className="text-2xl sm:text-3xl font-serif">
+            👥 {t('pangaliTitle')}
+          </h1>
+          <div className="no-print">
+            <PrintButton />
+          </div>
+        </div>
 
         {/* Search + Filter */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-5">
+        <div className="flex flex-col sm:flex-row gap-3 mb-5 no-print">
           <input
             type="text"
-            placeholder="பெயரை தேடவும்…"
+            placeholder={t('searchPlaceholder')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-full sm:w-64 px-4 py-2 rounded-lg border border-slate-300
@@ -63,17 +71,17 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
             className="w-full sm:w-48 px-4 py-2 rounded-lg border border-slate-300
                        text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
           >
-            <option value="ALL">அனைத்தும்</option>
-            <option value="COMPLETED">முடிந்தது</option>
-            <option value="PARTIAL">பகுதி</option>
-            <option value="YET_TO_GIVE">இன்னும் வழங்கவில்லை</option>
+            <option value="ALL">{t('filterAll')}</option>
+            <option value="COMPLETED">{t('filterCompleted')}</option>
+            <option value="PARTIAL">{t('filterPartial')}</option>
+            <option value="YET_TO_GIVE">{t('filterYetToGive')}</option>
           </select>
         </div>
 
         {/* Table */}
-        <details className="mb-6">
-          <summary className="cursor-pointer font-medium text-blue-700">
-            📊 ஒருங்கிணைந்த பார்வை (Table View)
+        <details className="mb-6 print:block" open>
+          <summary className="cursor-pointer font-medium text-blue-700 no-print">
+            📊 {t('viewTable')}
           </summary>
           <div className="mt-4">
             <PangaliTable data={filteredData} />
@@ -91,7 +99,7 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
 
         {filteredData.length === 0 && (
           <p className="mt-10 text-center text-slate-500 text-sm">
-            பொருந்தும் பதிவுகள் இல்லை
+            {t('filterAll')} {/* No matches found - can add to translations if needed */}
           </p>
         )}
       </div>

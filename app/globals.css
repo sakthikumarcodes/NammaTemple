@@ -24,3 +24,113 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Print styles */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Reset colors for print - but be selective */
+  main,
+  main * {
+    color: black !important;
+  }
+
+  /* Hide navigation and footer */
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide background images but keep content */
+  [class*="bg-"]:not([class*="bg-white"]):not([class*="bg-slate-50"]) {
+    background: white !important;
+  }
+
+  /* Ensure tables are visible and styled */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th,
+  td {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove shadows and rounded corners for print */
+  [class*="rounded"] {
+    border-radius: 0 !important;
+  }
+
+  [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  /* Ensure text is readable */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    color: black !important;
+  }
+
+  /* Prevent page breaks inside important sections */
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure BackgroundWrapper and its content are visible */
+  div[class*="relative"][class*="min-h-screen"] {
+    position: relative !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  div[class*="relative"][class*="z-10"] {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* Hide absolute positioned background layers */
+  div[class*="absolute"][class*="inset-0"]:not([class*="z-10"]) {
+    display: none !important;
+  }
+
+  /* Ensure main content is visible */
+  main {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  main > * {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Force details to show content */
+  details {
+    display: block !important;
+  }
+
+  details > summary {
+    display: none !important;
+  }
+
+  details > *:not(summary) {
+    display: block !important;
+  }
+}

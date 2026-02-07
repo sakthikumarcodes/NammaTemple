@@ -8,9 +8,9 @@ export default function BackgroundWrapper({
     children: React.ReactNode;
   }) {
     return (
-      <div className="relative min-h-screen overflow-hidden">
-        {/* Background image layer */}
-        <div className="absolute inset-0">
+      <div className="relative min-h-screen overflow-hidden print:bg-white">
+        {/* Background image layer - hidden in print */}
+        <div className="absolute inset-0 print:hidden">
           {images.map((img, i) => (
             <div
               key={i}
@@ -24,11 +24,11 @@ export default function BackgroundWrapper({
           ))}
         </div>
   
-        {/* Light overlay for readability - reduced opacity to show images */}
-        <div className="absolute inset-0 bg-white/50" />
+        {/* Light overlay for readability - hidden in print */}
+        <div className="absolute inset-0 bg-white/50 print:hidden" />
   
-        {/* Content */}
-        <div className="relative z-10">
+        {/* Content - always visible */}
+        <div className="relative z-10 print:relative print:z-auto">
           {children}
         </div>
       </div>
