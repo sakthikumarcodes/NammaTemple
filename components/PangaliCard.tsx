@@ -18,13 +18,13 @@ export default function PangaliCard({ data }: { data: Pangali }) {
     status = 'Partial';
   }
 
-  // ✅ Professional, subtle colors for badge
+  // High-contrast colors for badge (mobile readability)
   const statusColor =
     status === 'Completed'
-      ? 'bg-green-100 text-green-800 border-green-300'
+      ? 'bg-green-200 text-green-900 border-green-400'
       : status === 'Yet to Give'
-      ? 'bg-red-100 text-red-800 border-red-300'
-      : 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      ? 'bg-red-200 text-red-900 border-red-400'
+      : 'bg-amber-200 text-amber-900 border-amber-400';
 
   // ✅ Colorful card backgrounds based on status
   const cardBg =
@@ -61,7 +61,7 @@ export default function PangaliCard({ data }: { data: Pangali }) {
               }`}
             />
           )}
-          <h3 className="text-sm font-semibold text-slate-800 truncate">
+          <h3 className="text-sm font-semibold text-slate-900 truncate">
             {data.name}
           </h3>
         </div>
@@ -79,21 +79,21 @@ export default function PangaliCard({ data }: { data: Pangali }) {
         )}
       </div>
 
-      {/* Expanded details */}
+      {/* Expanded details - dark text for mobile readability */}
       {open && (
-        <div className="mt-3 space-y-1 text-sm text-slate-600">
+        <div className="mt-3 space-y-1 text-sm text-slate-800">
           <p>
-            <span className="font-medium">ஊர்:</span> {data.place}
+            <span className="font-medium text-slate-900">ஊர்:</span> {data.place}
           </p>
           <p>
-            <span className="font-medium">உறுதி:</span>{' '}
+            <span className="font-medium text-slate-900">உறுதி:</span>{' '}
             ₹{formatINR(data.committed)}
           </p>
           <p>
-            <span className="font-medium">கொடுத்தது:</span>{' '}
+            <span className="font-medium text-slate-900">கொடுத்தது:</span>{' '}
             ₹{formatINR(data.paid)}
           </p>
-          <p className="font-semibold text-red-700">
+          <p className="font-semibold text-red-900">
             மீதம்: ₹{formatINR(data.balance)}
           </p>
         </div>

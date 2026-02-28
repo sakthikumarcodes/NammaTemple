@@ -82,56 +82,56 @@ export default function HomePageClient({
             href="/expenses"
             className="bg-white rounded-xl shadow-sm p-5 text-left border border-indigo-100 hover:border-indigo-300 hover:shadow-md transition"
           >
-            <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500 flex items-center gap-2">
-              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-indigo-50 text-indigo-700 text-xs sm:text-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-indigo-800 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-indigo-100 text-indigo-800 text-xs sm:text-sm">
                 ₹
               </span>
               {t('expectedExpenses')}
             </p>
-            <p className="mt-2 text-xl sm:text-2xl font-semibold text-indigo-700">
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-slate-900">
               ₹{formatINR(totalForecastExpenses)}
             </p>
           </Link>
 
           {/* 2. Committed */}
           <div className="bg-white rounded-xl shadow-sm p-5 text-left">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 flex items-center gap-2">
-              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-xs">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-800 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-slate-200 text-slate-800 text-xs">
                 🤝
               </span>
               {t('committed')}
             </p>
-            <p className="mt-2 text-xl sm:text-2xl font-semibold">
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-slate-900">
               ₹{formatINR(totalCommitted)}
             </p>
           </div>
 
           {/* 3. Paid (Received) */}
           <div className="bg-white rounded-xl shadow-sm p-5 text-left">
-            <p className="text-xs font-semibold uppercase tracking-wide text-green-600 flex items-center gap-2">
-              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-green-50 text-green-700 text-xs">
+            <p className="text-xs font-semibold uppercase tracking-wide text-green-800 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-green-100 text-green-800 text-xs">
                 ✔
               </span>
               {t('paid')}
             </p>
-            <p className="mt-2 text-xl sm:text-2xl font-semibold text-green-700">
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-slate-900">
               ₹{formatINR(totalPaid)}
             </p>
           </div>
 
           {/* 4. Balance (Committed - Received) */}
           <div className="bg-white rounded-xl shadow-sm p-5 text-left">
-            <p className="text-xs font-semibold uppercase tracking-wide text-red-600 flex items-center gap-2">
-              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-50 text-red-700 text-xs">
+            <p className="text-xs font-semibold uppercase tracking-wide text-red-800 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-100 text-red-800 text-xs">
                 ⏳
               </span>
               {t('balance')}
             </p>
-            <p className="mt-2 text-xl sm:text-2xl font-semibold text-red-700">
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-slate-900">
               ₹{formatINR(totalBalance)}
             </p>
             <div className="mt-3">
-              <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+              <div className="flex items-center justify-between text-[11px] text-slate-700 mb-1">
                 <span>{t('totalProgress')}</span>
                 <span>{Math.round(overallProgress * 100)}%</span>
               </div>
@@ -146,13 +146,13 @@ export default function HomePageClient({
 
           {/* 5. Overall Pending (from Forecast) */}
           <div className="bg-white rounded-xl shadow-sm p-5 text-left border border-red-100 hover:border-red-300 hover:shadow-md transition">
-            <p className="text-xs font-semibold uppercase tracking-wide text-red-500 flex items-center gap-2">
-              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-50 text-red-700 text-xs sm:text-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-red-800 flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-100 text-red-800 text-xs sm:text-sm">
                 🚨
               </span>
               {t('overallPending')}
             </p>
-            <p className="mt-2 text-xl sm:text-2xl font-semibold text-red-700">
+            <p className="mt-2 text-xl sm:text-2xl font-semibold text-slate-900">
               ₹{formatINR(overallPending)}
             </p>
           </div>
@@ -174,7 +174,7 @@ export default function HomePageClient({
           </Link>
         </div>
 
-        <p className="mt-10 text-xs text-slate-600">
+        <p className="mt-10 text-xs text-slate-700">
           {t('disclaimer')}
         </p>
       </div>

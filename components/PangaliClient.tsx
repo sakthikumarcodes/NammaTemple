@@ -80,7 +80,7 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
 
         {/* Table */}
         <details className="mb-6 print:block" open>
-          <summary className="cursor-pointer font-medium text-blue-700 no-print">
+          <summary className="cursor-pointer font-medium text-blue-900 no-print">
             📊 {t('viewTable')}
           </summary>
           <div className="mt-4">
@@ -98,7 +98,7 @@ export default function PangaliClient({ data }: { data: Pangali[] }) {
         </div>
 
         {filteredData.length === 0 && (
-          <p className="mt-10 text-center text-slate-500 text-sm">
+          <p className="mt-10 text-center text-slate-700 text-sm">
             {t('filterAll')} {/* No matches found - can add to translations if needed */}
           </p>
         )}
