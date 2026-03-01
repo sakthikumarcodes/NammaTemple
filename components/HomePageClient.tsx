@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslation } from '@/lib/translations';
 import BackgroundWrapper from '@/components/BackgroundWrapper';
+import DonateModal from '@/components/DonateModal';
 import { formatINR } from '@/lib/formatINR';
 
 interface HomePageClientProps {
@@ -25,6 +27,7 @@ export default function HomePageClient({
   overallProgress,
 }: HomePageClientProps) {
   const { language } = useLanguage();
+  const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
   const t = (key: keyof typeof import('@/lib/translations').translations.ta) => getTranslation(language, key);
 
   return (
@@ -158,21 +161,35 @@ export default function HomePageClient({
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 flex-wrap">
+          <button
+            onClick={() => setIsDonateModalOpen(true)}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-amber-600 text-white text-sm font-semibold hover:bg-amber-700 transition shadow-md border border-amber-500"
+          >
+            <span>💝</span>
+            <span>{t('donate')}</span>
+          </button>
           <Link
             href="/pangali"
             className="inline-block px-6 py-3 rounded-lg bg-slate-800 text-white text-sm font-medium hover:bg-slate-900 transition"
           >
             {t('viewPangali')}
           </Link>
-
           <Link
             href="/expenses"
             className="inline-block px-6 py-3 rounded-lg bg-indigo-700 text-white text-sm font-medium hover:bg-indigo-800 transition"
           >
             {t('viewExpenses')}
           </Link>
+          <Link
+            href="/relatives"
+            className="inline-block px-6 py-3 rounded-lg bg-emerald-700 text-white text-sm font-medium hover:bg-emerald-800 transition"
+          >
+            {t('relatives')}
+          </Link>
         </div>
+
+        <DonateModal isOpen={isDonateModalOpen} onClose={() => setIsDonateModalOpen(false)} />
 
         <p className="mt-10 text-xs text-slate-700">
           {t('disclaimer')}

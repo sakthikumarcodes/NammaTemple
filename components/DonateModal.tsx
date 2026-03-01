@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import Image from 'next/image';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface DonateModalProps {
@@ -124,12 +125,14 @@ export default function DonateModal({ isOpen, onClose }: DonateModalProps) {
           {/* QR Code - Smaller and inline */}
           <div className="bg-slate-50 rounded-lg p-2 border border-slate-200 text-center">
             <p className="text-[10px] sm:text-xs text-slate-600 mb-2">{t('scanQRCodeToPay')}</p>
-            <div className="bg-white p-2 rounded-lg inline-block border-2 border-dashed border-slate-300">
-              <div className="w-32 h-32 sm:w-40 sm:h-40 bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] sm:text-xs">
-                QR Code Image
-                <br />
-                (Add QR code)
-              </div>
+            <div className="bg-white p-2 rounded-lg inline-block border border-slate-200">
+              <Image
+                src="/assets/myQR.jpeg"
+                alt="Scan QR code to pay"
+                width={160}
+                height={160}
+                className="w-32 h-32 sm:w-40 sm:h-40 object-contain"
+              />
             </div>
           </div>
 
