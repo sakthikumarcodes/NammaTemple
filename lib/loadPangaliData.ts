@@ -1,5 +1,59 @@
 import Papa from 'papaparse';
 
+/** Trim BOM / whitespace so CSV headers from Sheets match reliably */
+function sanitizeKeys(row: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(row)) {
+    const nk = String(k).replace(/^\uFEFF/, '').trim();
+    out[nk] = v;
+  }
+  return out;
+}
+
+function parseMoney(raw: unknown): number {
+  const s = String(raw ?? '')
+    .replace(/,/g, '')
+    .replace(/₹/g, '')
+    .replace(/\s/g, '')
+    .trim();
+  const n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function pickCell(row: Record<string, unknown>, keys: string[]): number {
+  for (const key of keys) {
+    const v = row[key];
+    if (v !== undefined && v !== null && String(v).trim() !== '') {
+      const n = parseMoney(v);
+      if (!Number.isNaN(n)) return n;
+    }
+  }
+  return 0;
+}
+
+function pickString(row: Record<string, unknown>, keys: string[]): string {
+  for (const key of keys) {
+    const v = row[key];
+    if (v !== undefined && v !== null && String(v).trim() !== '') {
+      return String(v).trim();
+    }
+  }
+  return '';
+}
+
+const COL_NAME = ['பெயர்', 'Name'];
+const COL_PLACE = ['ஊர்', 'Place'];
+const COL_COMMITTED = ['திருக்கொடை உறுதி', 'Committed', 'உறுதி தொகை'];
+const COL_PAID = [
+  'இது வரை கொடுத்தது',
+  'இதுவரை கொடுத்தது',
+  'கொடுத்தது',
+  'Paid',
+  'Received',
+  'வழங்கியது',
+];
+const COL_BALANCE = ['மீதம் கொடுக்க வேண்டியது', 'மீதம்', 'Balance', 'Pending'];
+
 export type Pangali = {
   name: string;
   place: string;
@@ -51,17 +105,18 @@ export async function loadPangaliData(): Promise<Pangali[]> {
     skipEmptyLines: true,
   });
 
-  return (parsed.data as any[]).map(row => ({
-    name: row['பெயர்']?.trim(),
-    place: row['ஊர்']?.trim(),
-    committed:
-      Number(String(row['திருக்கொடை உறுதி']).replace(/,/g, '')) || 0,
-    paid:
-      Number(String(row['இது வரை கொடுத்தது']).replace(/,/g, '')) || 0,
-    balance:
-      Number(String(row['மீதம் கொடுக்க வேண்டியது']).replace(/,/g, '')) || 0,
-  }));
-  
+  const rows = (parsed.data as Record<string, unknown>[])
+    .map(sanitizeKeys)
+    .map(row => ({
+      name: pickString(row, COL_NAME),
+      place: pickString(row, COL_PLACE),
+      committed: pickCell(row, COL_COMMITTED),
+      paid: pickCell(row, COL_PAID),
+      balance: pickCell(row, COL_BALANCE),
+    }))
+    .filter(p => p.name.length > 0);
+
+  return rows;
 }
 
 export async function loadRelativesData(): Promise<Relative[]> {
